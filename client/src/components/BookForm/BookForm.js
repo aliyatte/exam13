@@ -39,13 +39,11 @@ class BookForm extends Component {
   };
 
   render() {
-    // console.log(this.props.authors);
     const categoriesOptions = this.props.categories.map(c => ({title: c.title, id: c._id}));
     const authorsOptions = this.props.authors.map(author => ({title: author.name, id: author._id}));
-    // console.log(authorsOptions);
 
     return (
-      <form onSubmit={this.submitFormHandler}>
+      <form id="form" onSubmit={this.submitFormHandler}>
         <Grid container direction="column" spacing={2}>
           <Grid item xs>
             <FormElement

@@ -29,8 +29,8 @@ When('я заполняю поля формы:', table => {
   });
 });
 
-When('я выбираю категорию формы:', () => {
-
+When('я выбираю категорию', () => {
+  I.selectOption('#form input[name=category]', 'Fantasy');
 });
 
 
