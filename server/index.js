@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const config = require('./config');
 const users = require('./routes/users');
 const books = require('./routes/books');
+const categories = require('./routes/categories');
 
 const app = express();
 
@@ -17,6 +18,7 @@ const run = async () => {
 
   app.use('/users', users);
   app.use('/books', books);
+  app.use('/categories', categories);
 
 
   app.listen(config.port, () => {
