@@ -3,30 +3,30 @@ const express = require('express');
 const auth = require('../middleware/auth');
 const permit = require('../middleware/permit');
 
-const Category = require('../models/Category');
+const Author = require('../models/Author');
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const categories = await Category.aggregate([{
+  const authors = await Author.aggregate([{
     $lookup: {
       from: 'books',
       localField: '_id',
-      foreignField: 'category',
+      foreignField: 'author',
       as: 'books'
     }
   }, {
     $project: {
       "title": 1,
-      "productCount": {"$size": "$books"}
+      "bookCount": {"$size": "$books"}
     }
   }]);
 
-  return res.send(categories);
+  return res.send(authors);
 });
 
 router.get('/:id', async (req, res) => {
-  const category = await Category.aggregate([{
+  const author = await Author.aggregate([{
     $match: {
       _id: mongoose.Types.ObjectId(req.params.id),
     }
@@ -34,23 +34,23 @@ router.get('/:id', async (req, res) => {
     $lookup: {
       from: 'books',
       localField: '_id',
-      foreignField: 'category',
+      foreignField: 'author',
       as: 'books'
     }
   }]);
 
-  return res.send(category);
+  return res.send(author);
 });
 
 router.post('/', [auth, permit('admin')], async (req, res) => {
-  const category = new Category({
-    title: req.body.title,
-    description: req.body.description,
+  const author = new Author({
+    name: req.body.title,
+    biography: req.body.description,
   });
 
-  await category.save();
+  await author.save();
 
-  return res.send(category);
+  return res.send(author);
 });
 
 module.exports = router;
