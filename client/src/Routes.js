@@ -19,10 +19,10 @@ const Routes = () => {
       <Route path='/' exact component={Books} />
       <Route path="/category/:id" exact component={Books} />
       <Route path="/author/:id" exact component={Books} />
-      <Route path='/books/:id' exact component={BookPage} />
       <ProtectedRoute isAllowed={user && user.role === 'admin'} path="/books/new" exact component={NewBook} />
       <Route path="/registration" exact component={Registration} />
       <Route path="/login" exact component={Login} />
+      <Route path='/books/:id' exact component={BookPage} />
     </Switch>
   );
 };

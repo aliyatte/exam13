@@ -51,7 +51,7 @@ const AppToolbar = () => {
             <MenuIcon/>
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            <Link to="/" className={classes.mainLink}>Mock project</Link>
+            <Link to="/" className={classes.mainLink}>Book catalogue</Link>
           </Typography>
 
           {user ? (

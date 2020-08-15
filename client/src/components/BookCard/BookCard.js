@@ -16,24 +16,25 @@ const useStyles = makeStyles({
     height: '100%'
   },
   media: {
-    height: 0,
+    height: 100,
     paddingTop: '56.25%', // 16:9
   },
 });
 
-const ProductListItem = props => {
+const BookCard = (props) => {
   const classes = useStyles();
 
+  let image;
 
-  if (props.cover) {
-    props.cover = config.apiURL + '/' + props.cover;
+  if (props.image) {
+    image = config.apiURL + '/' + props.image;
   }
 
   return (
     <Grid item xs={12} sm={12} md={6} lg={4}>
       <Card className={classes.card}>
         <CardHeader title={props.title}/>
-        <CardMedia image={props.cover} title={props.title} className={classes.media}/>
+        <CardMedia image={image} title={props.title} className={classes.media}/>
         <CardContent>
           <strong style={{marginLeft: '10px'}}>
             {props.price} KGS
@@ -49,4 +50,4 @@ const ProductListItem = props => {
   );
 };
 
-export default ProductListItem;
+export default BookCard;

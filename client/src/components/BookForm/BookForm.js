@@ -6,9 +6,9 @@ import Button from "@material-ui/core/Button";
 class BookForm extends Component {
   state = {
     title: '',
-    cover: '',
+    image: '',
     price: '',
-    description: null,
+    description: '',
     author: '',
     category: '',
   };
@@ -39,8 +39,10 @@ class BookForm extends Component {
   };
 
   render() {
+    // console.log(this.props.authors);
     const categoriesOptions = this.props.categories.map(c => ({title: c.title, id: c._id}));
-    const authorsOption = this.props.authors.map(author => ({name: author.name, id: author._id}));
+    const authorsOptions = this.props.authors.map(author => ({title: author.name, id: author._id}));
+    // console.log(authorsOptions);
 
     return (
       <form onSubmit={this.submitFormHandler}>
@@ -56,14 +58,14 @@ class BookForm extends Component {
             />
           </Grid>
           <Grid item xs>
-            <FormElement
+            {authorsOptions && <FormElement
               type="select"
               propertyName="author" required
               title="Author"
               onChange={this.inputChangeHandler}
-              options={authorsOption}
+              options={authorsOptions}
               value={this.state.author}
-            />
+            />}
           </Grid>
           <Grid item xs>
             <FormElement
@@ -77,7 +79,7 @@ class BookForm extends Component {
           </Grid>
           <Grid item xs>
             <FormElement
-              type="text"
+              type="textarea"
               propertyName="description" required
               title="Description"
               placeholder="Enter book description"
@@ -100,8 +102,8 @@ class BookForm extends Component {
           <Grid item xs>
             <FormElement
               type="file"
-              propertyName="cover"
-              title="Cover"
+              propertyName="image"
+              title="Image"
               onChange={this.fileChangeHandler}
             />
           </Grid>

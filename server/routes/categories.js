@@ -18,28 +18,12 @@ router.get('/', async (req, res) => {
   }, {
     $project: {
       "title": 1,
-      "productCount": {"$size": "$books"}
+      "booksCount": {"$size": "$books"}
     }
   }]);
+  console.log(categories);
 
   return res.send(categories);
-});
-
-router.get('/:id', async (req, res) => {
-  const category = await Category.aggregate([{
-    $match: {
-      _id: mongoose.Types.ObjectId(req.params.id),
-    }
-  }, {
-    $lookup: {
-      from: 'books',
-      localField: '_id',
-      foreignField: 'category',
-      as: 'books'
-    }
-  }]);
-
-  return res.send(category);
 });
 
 router.post('/', [auth, permit('admin')], async (req, res) => {

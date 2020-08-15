@@ -11,51 +11,74 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import BookCard from "../../components/BookCard/BookCard";
 import {fetchBooks} from "../../store/actions/booksActions";
+import {fetchAuthors} from "../../store/actions/authorsActions";
+import Box from "@material-ui/core/Box";
 
 class Books extends Component {
   componentDidMount() {
     this.props.fetchBooks(this.props.match.params.id);
     this.props.fetchCategories();
+    this.props.fetchAuthors();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.match.params.id !== prevProps.match.params.id) {
-      this.props.fetchBooks(this.props.match.params.id);
+      if (this.props.match.path === "/author/:id") {
+        this.props.fetchBooks('author', this.props.match.params.id);
+      } else if (this.props.match.path === "/category/:id") {
+        this.props.fetchBooks('category', this.props.match.params.id);
+      } else {
+        this.props.fetchBooks(this.props.match.params.id);
+      }
     }
   }
 
   render() {
-    console.log(this.props.categories);
-    console.log(this.props.match.params.id);
     const drawerContent = (
       <MenuList>
         <MenuItem
           component={RouterNavLink}
           to="/" exact
           activeClassName="Mui-selected"
+          style={{fontWeight: 'bold'}}
         >
           All books
         </MenuItem>
 
-        {this.props.categories.map(category => (
+        <Box ml={2}>
+          <Typography variant="body1" style={{fontWeight: 'bold'}}>
+            Books by categories:
+          </Typography>
+        </Box>
+
+        {this.props.categories && this.props.categories.map(category => (
           <MenuItem
             key={category._id}
             component={RouterNavLink}
             to={"/category/" + category._id}
             activeClassName="Mui-selected"
+            // onClick={() => this.props.fetchBooks(category._id, null)}
           >
-            {category.title} ({category.bookCount})
+            {category.title} ({category.booksCount})
           </MenuItem>
         ))}
 
-        {this.props.authors.map(author => (
+        <Box ml={2}>
+          <Typography variant="body1" style={{fontWeight: 'bold'}}>
+            Books by authors:
+          </Typography>
+        </Box>
+
+        {this.props.authors && this.props.authors.map(author => (
           <MenuItem
             key={author._id}
             component={RouterNavLink}
             to={"/author/" + author._id}
             activeClassName="Mui-selected"
+            // onClick={() => this.props.fetchBooks(author._id)}
+
           >
-            {author.name} ({author.bookCount})
+            {author.name} ({author.booksCount})
           </MenuItem>
         ))}
       </MenuList>
@@ -78,7 +101,7 @@ class Books extends Component {
                   component={Link}
                   to={"/books/new"}
                 >
-                  Add book
+                  Add a book
                 </Button>
               </ShowTo>
             </Grid>
@@ -91,7 +114,7 @@ class Books extends Component {
                 title={book.title}
                 id={book._id}
                 price={book.price}
-                cover={book.cover}
+                image={book.image}
               />
             ))}
           </Grid>
@@ -104,12 +127,15 @@ class Books extends Component {
 
 const mapStateToProps = state => ({
   books: state.books.books,
+  book: state.books.book,
   categories: state.categories.categories,
+  authors: state.authors.authors,
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchBooks: categoryId => dispatch(fetchBooks(categoryId)),
+  fetchBooks: (kind, id) => dispatch(fetchBooks(kind, id)),
   fetchCategories: () => dispatch(fetchCategories()),
+  fetchAuthors: () => dispatch(fetchAuthors()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Books);

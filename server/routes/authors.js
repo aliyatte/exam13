@@ -17,29 +17,12 @@ router.get('/', async (req, res) => {
     }
   }, {
     $project: {
-      "title": 1,
-      "bookCount": {"$size": "$books"}
+      "name": 1,
+      "booksCount": {"$size": "$books"}
     }
   }]);
 
   return res.send(authors);
-});
-
-router.get('/:id', async (req, res) => {
-  const author = await Author.aggregate([{
-    $match: {
-      _id: mongoose.Types.ObjectId(req.params.id),
-    }
-  }, {
-    $lookup: {
-      from: 'books',
-      localField: '_id',
-      foreignField: 'author',
-      as: 'books'
-    }
-  }]);
-
-  return res.send(author);
 });
 
 router.post('/', [auth, permit('admin')], async (req, res) => {
