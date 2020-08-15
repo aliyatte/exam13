@@ -7,7 +7,7 @@ const BookSchema = new Schema({
       type: String,
       required: true,
     },
-    cover: {
+    image: {
       type: String,
       required: true,
     },
@@ -21,7 +21,7 @@ const BookSchema = new Schema({
     },
     author: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Author',
       required: true,
     },
     category: {

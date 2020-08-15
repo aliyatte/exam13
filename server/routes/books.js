@@ -10,27 +10,28 @@ const Book = require('../models/Book');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  let dbQuery = {};
+  let books;
 
   if (req.query.category) {
-    dbQuery.category = req.query.category;
+    books = await Book.find({category: req.query.category});
   } else if (req.query.author) {
-    dbQuery.author = req.query.author;
+    books = await Book.find({author: req.query.author});
+  } else {
+    books = await Book.find();
   }
 
-  const books = await Book.find(dbQuery);
   res.send(books);
 });
 
 router.get('/:id', async (req, res) => {
   try {
-    const book = await Book.findById(req.params.id);
+    const book = await Book.find({_id: req.params.id}).populate('author', 'name');
 
     if (!book) {
       return res.status(404).send({message: 'Not found'});
     }
 
-    res.send(book);
+    res.send(book[0]);
   } catch (e) {
     res.status(404).send({message: 'Not found'});
   }
@@ -41,11 +42,14 @@ router.post('/', [auth, permit('admin'), upload.single('image')], async (req, re
     const bookData = {
       title: req.body.title,
       author: req.body.author,
-      cover: req.file.filename,
       price: req.body.price,
       description: req.body.description,
       category: req.body.category,
     };
+
+    if (req.file) {
+      bookData.image = req.file.filename;
+    }
 
     const book = new Book(bookData);
 
