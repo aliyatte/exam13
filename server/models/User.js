@@ -28,6 +28,13 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  displayName: {
+    type: String,
+    required: true,
+  },
+  avatar: {
+    type: String,
+  },
   role: {
     type: String,
     required: true,
