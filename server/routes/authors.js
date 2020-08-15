@@ -44,8 +44,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', [auth, permit('admin')], async (req, res) => {
   const author = new Author({
-    name: req.body.title,
-    biography: req.body.description,
+    name: req.body.name,
+    biography: req.body.biography,
   });
 
   await author.save();

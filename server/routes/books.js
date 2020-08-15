@@ -14,9 +14,11 @@ router.get('/', async (req, res) => {
 
   if (req.query.category) {
     dbQuery.category = req.query.category;
+  } else if (req.query.author) {
+    dbQuery.author = req.query.author;
   }
 
-  const books = await Book.find(dbQuery).populate('category');
+  const books = await Book.find(dbQuery);
   res.send(books);
 });
 
@@ -51,11 +53,7 @@ router.post('/', [auth, permit('admin'), upload.single('image')], async (req, re
 
     return res.send({id: book._id});
   } catch (e) {
-    if (e instanceof ValidationError) {
-      return res.status(400).send(e);
-    } else {
-      return res.sendStatus(500);
-    }
+    return res.status(400).send({message: 'Not found'});
   }
 });
 

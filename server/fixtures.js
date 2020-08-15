@@ -48,7 +48,6 @@ const run = async () => {
   }, {
     name: 'Amir Khosrov Dekhlevi',
     biography: 'A world-known Indian-Turc poet of 13-14 centuries',
-  }, {
   });
 
   const [fantasy, althistory, scfiction, prose, classic, poetry] = await Category.create({
@@ -69,7 +68,6 @@ const run = async () => {
   }, {
     title: 'Poetry',
     description: 'Poems',
-  }, {
   });
 
   const [navajdeniya, labirint, elita, parokhod, gardens] = await Book.create({
